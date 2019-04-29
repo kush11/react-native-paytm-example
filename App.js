@@ -1,49 +1,52 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React from "react";
+import { View, Text, TouchableOpacity, Modal, WebView } from "react-native";
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+export default class App extends React.Component {
+  state = {
+    showModa: false,
+    ORDER_ID: "KUSH66634",
+    TXN_AMOUNT: "500",
+    CUST_ID: "Kush",
+    ack:''
+  };
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
+  handelResponse = (data) => {
+    console.log(data);
+    if(data === 'true')
+    {
+      this.setState({showModa:false, ack:'Transaction was sucessfull'})
+    }
+    else if(data === 'false'){
+      this.setState({showModa:false, ack:'Oop\'s Something went wrong'});
+    }
+    else return;
+  };
   render() {
+    const { ORDER_ID, TXN_AMOUNT, CUST_ID, showModa, ack } = this.state;
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+      <View style={{ marginTop: 20 }}>
+        <TouchableOpacity onPress={() => this.setState({ showModa: true })}>
+          <Text>Pay with Paytm</Text>
+        </TouchableOpacity>
+        <View style={{marginTop:10}}>
+          <Text>
+            {ack}
+          </Text>
+        </View>
+        <Modal
+          visible={showModa}
+          onRequestClose={() => this.setState({ showModa: true })}
+        >
+          <WebView
+            source={{uri: '192.168.31.1:3001/api/paytm/request'}}            
+            injectedJavaScript={`document.getElementById('ORDER_ID).value="${ORDER_ID}";
+                document.getElementById('CUST_ID).value="${CUST_ID}";
+                document.getElementById('TXN_AMOUNT).value="${TXN_AMOUNT}";
+                document.f1.submit()`}
+            onNavigationStateChange={data => this.handelResponse(data.title)}
+          />          
+        </Modal>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
