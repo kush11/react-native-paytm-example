@@ -1,12 +1,15 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Modal, WebView } from "react-native";
-
+import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { WebView } from 'react-native-webview';
 export default class App extends React.Component {
   state = {
     showModal: false,
-    ORDER_ID: "ORDER_ID124344",
-    TXN_AMOUNT: "500",
+    ORDER_ID: "ORDER_ID12eesdess",
+    TXN_AMOUNT: "1500",
     CUST_ID: "Kush",
+    MID: "bMYLkb94342902372687",
+    PAYTM_MERCHANT_KEY: "b0#T#%Cl9&EjGuI6",
+    INDUSTRY_TYPE_ID: "Retail",
     ack: ''
   };
 
@@ -21,9 +24,9 @@ export default class App extends React.Component {
     else return;
   };
   render() {
-    const { ORDER_ID, TXN_AMOUNT, CUST_ID, showModal, ack } = this.state;
+    const { ORDER_ID, TXN_AMOUNT, CUST_ID, MID, PAYTM_MERCHANT_KEY, INDUSTRY_TYPE_ID, showModal, ack } = this.state;
     return (
-      <View style={{ marginTop: 20 }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity onPress={() => this.setState({ showModal: true })}>
           <Text>Pay with Paytm</Text>
         </TouchableOpacity>
@@ -34,12 +37,19 @@ export default class App extends React.Component {
         </View>
         <Modal
           visible={showModal}
+          animationType={"slide"}
           onRequestClose={() => this.setState({ showModal: true })}
         >
           <WebView
-            style={{ marginTop: 20 }}
-            source={{ uri: 'http://172.30.15.211:3002/api/paytm/request' }}
-            injectedJavaScript={`document.getElementById("ORDER_ID").value = "${ORDER_ID}";document.getElementById("CUST_ID").value = "${CUST_ID}";document.getElementById("TXN_AMOUNT").value = "${TXN_AMOUNT}";document.f1.submit();`}
+            source={{ uri: 'http://172.30.13.176:3002/api/paytm/request' }}
+            injectedJavaScript={`document.getElementById("ORDER_ID").value = "${ORDER_ID}";
+            document.getElementById("CUST_ID").value = "${CUST_ID}";
+            document.getElementById("TXN_AMOUNT").value = "${TXN_AMOUNT}";
+            document.getElementById("MID").value = "${MID}";
+            document.getElementById("PAYTM_MERCHANT_KEY").value = "${PAYTM_MERCHANT_KEY}";
+            document.getElementById("INDUSTRY_TYPE_ID").value = "${INDUSTRY_TYPE_ID}";
+            document.f1.submit();`
+            }
             onNavigationStateChange={data => this.handelResponse(data.title)}
           />
         </Modal>
