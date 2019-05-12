@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 export default class App extends React.Component {
   state = {
     showModal: false,
-    ORDER_ID: "ORDER_ID12eesdess",
+    ORDER_ID: "ORDER_ID143",
     TXN_AMOUNT: "1500",
     CUST_ID: "Kush",
     MID: "bMYLkb94342902372687",
@@ -35,13 +35,15 @@ export default class App extends React.Component {
             {ack}
           </Text>
         </View>
-        <Modal
+        <Modal        
           visible={showModal}
           animationType={"slide"}
           onRequestClose={() => this.setState({ showModal: true })}
         >
-          <WebView
-            source={{ uri: 'http://172.30.13.176:3002/api/paytm/request' }}
+          <WebView     
+          style={{height:80}}     
+          source={{ uri: 'https://paytmgateway.herokuapp.com/api/paytm/request' }}
+            //source={{ uri: 'http://172.30.13.176:3002/api/paytm/request' }}
             injectedJavaScript={`document.getElementById("ORDER_ID").value = "${ORDER_ID}";
             document.getElementById("CUST_ID").value = "${CUST_ID}";
             document.getElementById("TXN_AMOUNT").value = "${TXN_AMOUNT}";
@@ -52,6 +54,11 @@ export default class App extends React.Component {
             }
             onNavigationStateChange={data => this.handelResponse(data.title)}
           />
+          <View style={{justifyContent:"center", alignItems:'center'}}>
+          <TouchableOpacity onPress={() => this.setState({ showModal: false })}>
+          <Text style={{fontSize:25}}>Close the Payment</Text>
+        </TouchableOpacity>        
+         </View>
         </Modal>
       </View>
     );
