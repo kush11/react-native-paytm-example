@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Modal, Image } from "react-native";
-import { WebView } from 'react-native-webview';
+import { View, Text, TouchableOpacity, Modal, Image , WebView} from "react-native";
+// import { WebView } from 'react-native-webview';
 export default class App extends React.Component {
   state = {
     showPaypalModal: false,
@@ -43,7 +43,7 @@ export default class App extends React.Component {
     }
     console.log(data);
 
-    if (objData.RESPCODE === '01') {
+    if (objData.state === 'approved') {
       this.setState({ showPaypalModal: false, ackPayPAl: 'Transaction was successfully' })
     }
     else if (data === 'false') {
@@ -124,14 +124,14 @@ export default class App extends React.Component {
               //https://pratiangateway.herokuapp.com/
               source={{ uri: 'https://pratiangateway.herokuapp.com/api/index' }}
               //source={{ uri: 'http://172.30.13.176:3002/api/paytm/request' }}
-              injectedJavaScript={`document.getElementById("merchant_id").value ="${merchant_id}";
-            document.getElementById("item_name").value = "${item_name}";
-            document.getElementById("item_price").value = "${item_price}";
-            document.getElementById("currency").value = "${currency}";
-            document.getElementById("item_quantity").value = "${item_quantity}";
-            document.getElementById("item_description").value = "${item_description}";
-            document.f1.submit();`
-              }
+            //   injectedJavaScript={`document.getElementById("merchant_id").value ="${merchant_id}";
+            // document.getElementById("item_name").value = "${item_name}";
+            // document.getElementById("item_price").value = "${item_price}";
+            // document.getElementById("currency").value = "${currency}";
+            // document.getElementById("item_quantity").value = "${item_quantity}";
+            // document.getElementById("item_description").value = "${item_description}";
+            // document.f1.submit();`
+            //   }
               onNavigationStateChange={data => this.handelResponsePayPal(data.title)}
             />
             <View style={{ justifyContent: "center", alignItems: 'center', backgroundColor: '#f2f2f2' }}>
